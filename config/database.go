@@ -52,6 +52,5 @@ func SqlQuery() []models.Album {
 	for _, each := range result {
 		output = append(output, each)
 	}
-	fmt.Println(len(output))
 	return output
 }
