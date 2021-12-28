@@ -1,20 +1,19 @@
 package repositories
 
 import (
+	"example/web-service-gin/config"
 	"example/web-service-gin/models"
 	"fmt"
 	"net/http"
-
-	"github.com/jmoiron/sqlx"
 )
 
 func SqlQuery() []models.Album {
-	// db, err := config.Connect()
-	db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
-	}
+	db, err := config.Connect()
+	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// 	// return
+	// }
 	defer db.Close()
 
 	Albums := []models.Album{}
