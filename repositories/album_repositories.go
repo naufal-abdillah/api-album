@@ -108,6 +108,27 @@ func SqlQueryById(c *gin.Context) []models.Album {
 	return output
 }
 
+func SqlQueryAdd(c *gin.Context) []models.Album {
+	db, err := config.Connect()
+	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
+	if err != nil {
+		fmt.Println(err.Error())
+		// return
+	}
+	defer db.Close()
+	var Album = SqlQuery()
+	var input models.Album
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+	// Trying adding entry
+	// var temp = models.Album{ID: "4", Title: "An Evening With Silk Sonic", Artist: "Silk Sonic", Price: 12.42}
+	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
+	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
+	Album = SqlQuery()
+	return Album
+}
+
 type Repo struct {
 }
 
@@ -122,26 +143,6 @@ func (R Repo) RepoGetAlbumById(c *gin.Context) (int, []models.Album) {
 }
 
 func (R Repo) RepoAddAlbum(c *gin.Context) (int, []models.Album) {
-	db, err := config.Connect()
-	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
-	}
-	defer db.Close()
-
-	var Album = SqlQuery()
-	var input models.Album
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return http.StatusBadRequest, Album
-	}
-	// Trying adding entry
-	// var temp = models.Album{ID: "4", Title: "An Evening With Silk Sonic", Artist: "Silk Sonic", Price: 12.42}
-	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
-	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
-
-	// fmt.Print(input.ID)
-	// fmt.Print("Printing Adding")
+	var Album = SqlQueryAdd(c)
 	return http.StatusOK, Album
 }
