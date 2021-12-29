@@ -30,3 +30,9 @@ func (S Service) ServicesAddAlbum(c *gin.Context) (int, []models.Album) {
 	// fmt.Print("Printing By ID")
 	return IRepo.RepoAddAlbum(c)
 }
+func (S Service) ServicesUpdateAlbum(c *gin.Context) (int, []models.Album) {
+	var IRepo interfaces.IAlbumRepo
+	IRepo = repositories.Repo{}
+	// fmt.Print("Printing By ID")
+	return IRepo.RepoUpdateAlbum(c)
+}
