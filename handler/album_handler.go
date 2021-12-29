@@ -16,3 +16,13 @@ func GetAlbums(c *gin.Context) {
 	// c.IndentedJSON(services.ServicesGetAlbums())
 	c.IndentedJSON(IService.ServicesGetAlbums())
 }
+
+func GetAlbumById(c *gin.Context) {
+	var IService interfaces.IAlbumService
+	IService = services.Service{}
+	// IService.ServicesGetAlbums = services.ServicesGetAlbums
+	// c.IndentedJSON(services.ServicesGetAlbums())
+	c.IndentedJSON(IService.ServicesGetAlbumById(c))
+	// var Status, task = IService.ServicesGetAlbumById(c)
+	// c.JSON(Status, gin.H{"data": task})
+}
