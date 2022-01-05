@@ -7,24 +7,28 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
 )
 
-func SqlQuery() []models.Album {
-	db, err := config.Connect()
-	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
+var db *sqlx.DB
+var err error
+
+// db, err = config.Connect()
+
+func init() {
+	if db == nil {
+		db, err = config.Connect()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
-	defer db.Close()
+}
 
-	// Albums := []models.Album{}
-	// db.Select(&Albums, "select * from tb_album")
-
+func SqlQuery() []models.Album {
 	rows, err := db.Query("select * from tb_album")
 	if err != nil {
 		fmt.Println(err.Error())
-		// return
 	}
 	defer rows.Close()
 
@@ -36,7 +40,6 @@ func SqlQuery() []models.Album {
 
 		if err != nil {
 			fmt.Println(err.Error())
-			// return
 		}
 
 		result = append(result, each)
@@ -47,27 +50,12 @@ func SqlQuery() []models.Album {
 		// return
 	}
 	output := make([]models.Album, len(result))
-	// for _, each := range result {
-	// 	output = append(output, each)
-	// }
 	output = append(output, result...)
 	return output
 }
 
 func SqlQueryById(c *gin.Context) []models.Album {
 	var Param string = c.Param("id")
-	// Param = c.Param("id")
-
-	db, err := config.Connect()
-	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
-	}
-	defer db.Close()
-
-	// Albums := []models.Album{}
-	// db.Select(&Albums, "select * from tb_album")
 
 	rows, err := db.Query("SELECT * FROM tb_album WHERE ID=?", Param)
 	if err != nil {
@@ -110,13 +98,6 @@ func SqlQueryById(c *gin.Context) []models.Album {
 
 func SqlQueryUpdate(c *gin.Context) []models.Album {
 	var Param string = c.Param("id")
-	db, err := config.Connect()
-	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
-	}
-	defer db.Close()
 	var Album = SqlQuery()
 	var input models.Album
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -144,13 +125,6 @@ func (R Repo) RepoGetAlbumById(c *gin.Context) (int, []models.Album) {
 }
 
 func (R Repo) RepoAddAlbum(c *gin.Context) (int, []models.Album) {
-	db, err := config.Connect()
-	// db, err := sqlx.Connect("mysql", "root:@tcp(127.0.0.1:3306)/db_belajar_golang")
-	if err != nil {
-		fmt.Println(err.Error())
-		// return
-	}
-	defer db.Close()
 
 	var Album = SqlQuery()
 	var input models.Album
@@ -162,7 +136,8 @@ func (R Repo) RepoAddAlbum(c *gin.Context) (int, []models.Album) {
 	// var temp = models.Album{ID: "4", Title: "An Evening With Silk Sonic", Artist: "Silk Sonic", Price: 12.42}
 	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
 	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
-
+	// update Album variable after query
+	Album = SqlQuery()
 	// fmt.Print(input.ID)
 	// fmt.Print("Printing Adding")
 	return http.StatusOK, Album
