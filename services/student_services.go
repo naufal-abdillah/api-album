@@ -14,25 +14,23 @@ type Service struct {
 func (S Service) ServicesGetAlbums() (int, []models.Album) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	// return repositories.RepoGetAlbum()
 	return IRepo.RepoGetAlbum()
 }
 
 func (S Service) ServicesGetAlbumById(c *gin.Context) (int, []models.Album) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	// fmt.Print("Printing By ID")
+	// handle kalau nol/huruf
+
 	return IRepo.RepoGetAlbumById(c)
 }
-func (S Service) ServicesAddAlbum(c *gin.Context) (int, []models.Album) {
+func (S Service) ServicesAddAlbum(c *gin.Context) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	// fmt.Print("Printing By ID")
-	return IRepo.RepoAddAlbum(c)
+	IRepo.RepoAddAlbum(c)
 }
-func (S Service) ServicesUpdateAlbum(c *gin.Context) (int, []models.Album) {
+func (S Service) ServicesUpdateAlbum(c *gin.Context) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	// fmt.Print("Printing By ID")
-	return IRepo.RepoUpdateAlbum(c)
+	IRepo.RepoUpdateAlbum(c)
 }
