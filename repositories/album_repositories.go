@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
@@ -82,23 +81,23 @@ func (R Repo) RepoGetAlbumById(Id string) (int, []models.Album) {
 	return http.StatusOK, output
 }
 
-func (R Repo) RepoAddAlbum(c *gin.Context) {
+func (R Repo) RepoAddAlbum(input models.Album) {
 
-	var input models.Album
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
+	// var input models.Album
+	// if err := c.ShouldBindJSON(&input); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// }
 	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
 	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
 
 }
 
-func (R Repo) RepoUpdateAlbum(c *gin.Context) {
-	var Param string = c.Param("id")
-	var input models.Album
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
+func (R Repo) RepoUpdateAlbum(id string, input models.Album) {
+	// var Param string = c.Param("id")
+	// var input models.Album
+	// if err := c.ShouldBindJSON(&input); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// }
 	entry := `UPDATE tb_album SET id=?, title=?, artist=?, price=? WHERE ID=?`
-	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price, Param)
+	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price, id)
 }

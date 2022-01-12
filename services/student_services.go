@@ -4,8 +4,6 @@ import (
 	"example/web-service-gin/interfaces"
 	"example/web-service-gin/models"
 	"example/web-service-gin/repositories"
-
-	"github.com/gin-gonic/gin"
 )
 
 type Service struct {
@@ -24,13 +22,15 @@ func (S Service) ServicesGetAlbumById(Param string) (int, []models.Album) {
 	var Id string = Param
 	return IRepo.RepoGetAlbumById(Id)
 }
-func (S Service) ServicesAddAlbum(c *gin.Context) {
+func (S Service) ServicesAddAlbum(input models.Album) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	IRepo.RepoAddAlbum(c)
+	IRepo.RepoAddAlbum(input)
 }
-func (S Service) ServicesUpdateAlbum(c *gin.Context) {
+func (S Service) ServicesUpdateAlbum(param string, input models.Album) {
+	var id string = param
+	//check param
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
-	IRepo.RepoUpdateAlbum(c)
+	IRepo.RepoUpdateAlbum(id, input)
 }

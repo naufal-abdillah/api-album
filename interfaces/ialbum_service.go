@@ -2,13 +2,11 @@ package interfaces
 
 import (
 	"example/web-service-gin/models"
-
-	"github.com/gin-gonic/gin"
 )
 
 type IAlbumService interface {
 	ServicesGetAlbums() (int, []models.Album)
 	ServicesGetAlbumById(Param string) (int, []models.Album)
-	ServicesAddAlbum(c *gin.Context)    // (int, []models.Album)
-	ServicesUpdateAlbum(c *gin.Context) //(int, []models.Album)
+	ServicesAddAlbum(input models.Album)                  // (int, []models.Album)
+	ServicesUpdateAlbum(param string, input models.Album) //(int, []models.Album)
 }
