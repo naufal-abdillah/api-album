@@ -17,12 +17,12 @@ func (S Service) ServicesGetAlbums() (int, []models.Album) {
 	return IRepo.RepoGetAlbum()
 }
 
-func (S Service) ServicesGetAlbumById(c *gin.Context) (int, []models.Album) {
+func (S Service) ServicesGetAlbumById(Param string) (int, []models.Album) {
 	var IRepo interfaces.IAlbumRepo
 	IRepo = repositories.Repo{}
 	// handle kalau nol/huruf
-
-	return IRepo.RepoGetAlbumById(c)
+	var Id string = Param
+	return IRepo.RepoGetAlbumById(Id)
 }
 func (S Service) ServicesAddAlbum(c *gin.Context) {
 	var IRepo interfaces.IAlbumRepo

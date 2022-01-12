@@ -54,10 +54,8 @@ func (R Repo) RepoGetAlbum() (int, []models.Album) {
 	return http.StatusOK, output
 }
 
-func (R Repo) RepoGetAlbumById(c *gin.Context) (int, []models.Album) {
-	var Param string = c.Param("id")
-
-	rows, err := db.Query("SELECT * FROM tb_album WHERE ID=?", Param)
+func (R Repo) RepoGetAlbumById(Id string) (int, []models.Album) {
+	rows, err := db.Query("SELECT * FROM tb_album WHERE ID=?", Id)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

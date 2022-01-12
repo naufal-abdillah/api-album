@@ -14,9 +14,10 @@ func GetAlbums(c *gin.Context) {
 }
 
 func GetAlbumById(c *gin.Context) {
+	var Param string = c.Param("id")
 	var IService interfaces.IAlbumService
 	IService = services.Service{}
-	c.IndentedJSON(IService.ServicesGetAlbumById(c))
+	c.IndentedJSON(IService.ServicesGetAlbumById(Param))
 }
 func AddAlbum(c *gin.Context) {
 	var IService interfaces.IAlbumService
@@ -24,6 +25,7 @@ func AddAlbum(c *gin.Context) {
 	IService.ServicesAddAlbum(c)
 }
 func UpdateAlbum(c *gin.Context) {
+
 	var IService interfaces.IAlbumService
 	IService = services.Service{}
 	IService.ServicesUpdateAlbum(c)
