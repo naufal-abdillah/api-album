@@ -89,6 +89,7 @@ func (R Repo) RepoAddAlbum(c *gin.Context) {
 	var input models.Album
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
 	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
 
