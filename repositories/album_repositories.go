@@ -53,7 +53,7 @@ func (R Repo) RepoGetAlbum() (int, []models.Album) {
 	return http.StatusOK, output
 }
 
-func (R Repo) RepoGetAlbumById(Id string) (int, []models.Album) {
+func (R Repo) RepoGetAlbumById(Id int) (int, []models.Album) {
 	rows, err := db.Query("SELECT * FROM tb_album WHERE ID=?", Id)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -82,22 +82,12 @@ func (R Repo) RepoGetAlbumById(Id string) (int, []models.Album) {
 }
 
 func (R Repo) RepoAddAlbum(input models.Album) {
-
-	// var input models.Album
-	// if err := c.ShouldBindJSON(&input); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// }
 	entry := `INSERT INTO tb_album (id, title, artist, price) VALUES (?, ?, ?, ?)`
 	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price)
 
 }
 
-func (R Repo) RepoUpdateAlbum(id string, input models.Album) {
-	// var Param string = c.Param("id")
-	// var input models.Album
-	// if err := c.ShouldBindJSON(&input); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// }
+func (R Repo) RepoUpdateAlbum(id int, input models.Album) {
 	entry := `UPDATE tb_album SET id=?, title=?, artist=?, price=? WHERE ID=?`
 	db.MustExec(entry, input.ID, input.Title, input.Artist, input.Price, id)
 }

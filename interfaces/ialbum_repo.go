@@ -6,7 +6,7 @@ import (
 
 type IAlbumRepo interface {
 	RepoGetAlbum() (int, []models.Album)
-	RepoGetAlbumById(Id string) (int, []models.Album)
+	RepoGetAlbumById(Id int) (int, []models.Album)
 	RepoAddAlbum(input models.Album)
-	RepoUpdateAlbum(id string, input models.Album)
+	RepoUpdateAlbum(id int, input models.Album)
 }
