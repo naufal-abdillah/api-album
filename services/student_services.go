@@ -4,6 +4,7 @@ import (
 	"example/web-service-gin/interfaces"
 	"example/web-service-gin/models"
 	"example/web-service-gin/repositories"
+	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -27,17 +28,20 @@ func (S Service) ServicesAddAlbum(input models.Album) {
 	IRepo.RepoAddAlbum(input)
 }
 func (S Service) ServicesUpdateAlbum(param string, input models.Album) {
-	var id int = checkParamId(param)
 	//check param
+	var id int = checkParamId(param)
 	var IRepo interfaces.IAlbumRepo = repositories.Repo{}
 	IRepo.RepoUpdateAlbum(id, input)
 }
 
 func checkParamId(inputString string) (outputInt int) {
-	var regex, _ = regexp.Compile(`[0-9]*`)
-	if inputString != "0" && regex.MatchString(inputString) {
+	// id must be natural number
+	var regex, _ = regexp.Compile(`[1-9][0-9]*`)
+	if regex.MatchString(inputString) {
 		outputInt, _ = strconv.Atoi(inputString)
 
+	} else {
+		fmt.Print("Parameter Invalid")
 	}
 	return outputInt
 }
