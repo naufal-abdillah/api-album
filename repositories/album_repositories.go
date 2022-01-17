@@ -26,13 +26,13 @@ type Repo struct {
 }
 
 func (R Repo) RepoGetAlbum() (int, []models.Album) {
+	var result []models.Album
 	rows, err := db.Query("select * from tb_album")
 	if err != nil {
 		fmt.Println(err.Error())
+		return http.StatusBadRequest, result
 	}
 	defer rows.Close()
-
-	var result []models.Album
 
 	for rows.Next() {
 		var each = models.Album{}
@@ -40,6 +40,7 @@ func (R Repo) RepoGetAlbum() (int, []models.Album) {
 
 		if err != nil {
 			fmt.Println(err.Error())
+			return http.StatusBadRequest, result
 		}
 
 		result = append(result, each)
@@ -47,6 +48,7 @@ func (R Repo) RepoGetAlbum() (int, []models.Album) {
 
 	if err = rows.Err(); err != nil {
 		fmt.Println(err.Error())
+		return http.StatusBadRequest, result
 	}
 	output := make([]models.Album, len(result))
 	output = append(output, result...)
@@ -55,18 +57,19 @@ func (R Repo) RepoGetAlbum() (int, []models.Album) {
 
 func (R Repo) RepoGetAlbumById(Id int) (int, []models.Album) {
 	rows, err := db.Query("SELECT * FROM tb_album WHERE ID=?", Id)
+	var result []models.Album
 	if err != nil {
 		fmt.Println(err.Error())
+		return http.StatusBadRequest, result
 	}
 	defer rows.Close()
-
-	var result []models.Album
 
 	for rows.Next() {
 		var each = models.Album{}
 		var err = rows.Scan(&each.ID, &each.Title, &each.Artist, &each.Price)
 		if err != nil {
 			fmt.Println(err.Error())
+			return http.StatusBadRequest, result
 		}
 
 		result = append(result, each)
@@ -74,6 +77,8 @@ func (R Repo) RepoGetAlbumById(Id int) (int, []models.Album) {
 
 	if err = rows.Err(); err != nil {
 		fmt.Println(err.Error())
+		return http.StatusBadRequest, result
+
 	}
 	output := make([]models.Album, len(result))
 	output = append(output, result...)
