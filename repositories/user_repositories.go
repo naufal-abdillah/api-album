@@ -19,7 +19,7 @@ func (R UserRepo) RepoRegister(user models.User) int {
 	return http.StatusOK
 }
 
-func UserExists(email string) (bool, error) {
+func (R UserRepo) UserExists(email string) (bool, error) {
 	userExists := db.QueryRow(`SELECT EXISTS (SELECT * FROM tb_user WHERE email =? )`, email)
 	var result bool
 	err := userExists.Scan(&result)

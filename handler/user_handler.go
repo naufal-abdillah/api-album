@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"example/web-service-gin/interfaces"
 	"example/web-service-gin/repositories"
 	"example/web-service-gin/services"
 	"net/http"
@@ -15,7 +16,9 @@ func HandlerRegisterUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
-	userExists, err := (repositories.UserExists(input["email"]))
+
+	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
+	userExists, err := (IUserRepo.UserExists(input["email"]))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
@@ -25,8 +28,9 @@ func HandlerRegisterUser(c *gin.Context) {
 			"message": "Email already registered",
 		})
 	} else {
-		var Service services.UserService
-		Service.ServicesRegister(input)
+		var IUserService interfaces.IUserService = services.UserService{}
+		// var Service services.UserService
+		IUserService.ServicesRegister(input)
 		token, err := createToken(input)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
