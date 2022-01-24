@@ -25,7 +25,7 @@ func HandlerRegisterUser(c *gin.Context) {
 			"message": "Email already registered",
 		})
 	} else {
-		var Service services.Service
+		var Service services.UserService
 		Service.ServicesRegister(input)
 		token, err := createToken(input)
 		if err != nil {

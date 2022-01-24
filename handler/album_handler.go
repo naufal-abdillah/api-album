@@ -10,14 +10,13 @@ import (
 )
 
 func HandlerGetAlbums(c *gin.Context) {
-	var IService interfaces.IAlbumService = services.Service{}
-	IService = services.Service{}
+	var IService interfaces.IAlbumService = services.AlbumService{}
 	c.IndentedJSON(IService.ServicesGetAlbums())
 }
 
 func HandlerGetAlbumById(c *gin.Context) {
 	var Param string = c.Param("id")
-	var IService interfaces.IAlbumService = services.Service{}
+	var IService interfaces.IAlbumService = services.AlbumService{}
 	c.IndentedJSON(IService.ServicesGetAlbumById(Param))
 }
 func HandlerAddAlbum(c *gin.Context) {
@@ -25,7 +24,7 @@ func HandlerAddAlbum(c *gin.Context) {
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
-	var IService interfaces.IAlbumService = services.Service{}
+	var IService interfaces.IAlbumService = services.AlbumService{}
 	IService.ServicesAddAlbum(input)
 }
 func HandlerUpdateAlbum(c *gin.Context) {
@@ -34,6 +33,6 @@ func HandlerUpdateAlbum(c *gin.Context) {
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
-	var IService interfaces.IAlbumService = services.Service{}
+	var IService interfaces.IAlbumService = services.AlbumService{}
 	IService.ServicesUpdateAlbum(param, input)
 }

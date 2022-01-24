@@ -7,7 +7,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (S Service) ServicesRegister(input map[string]string) {
+type UserService struct {
+}
+
+func (S UserService) ServicesRegister(input map[string]string) {
 	password, _ := bcrypt.GenerateFromPassword([]byte(input["password"]), 12)
 	// password, _ := bcrypt.GenerateFromPassword(user["password"], 12)
 	user := models.User{
@@ -16,6 +19,6 @@ func (S Service) ServicesRegister(input map[string]string) {
 		Password: password,
 	}
 	// fmt.Print(user.ID)
-	var Repo repositories.Repo
+	var Repo repositories.UserRepo
 	Repo.RepoRegister(user)
 }

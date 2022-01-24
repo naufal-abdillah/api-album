@@ -9,28 +9,28 @@ import (
 	"strconv"
 )
 
-type Service struct {
+type AlbumService struct {
 }
 
-func (S Service) ServicesGetAlbums() (int, []models.Album) {
-	var IRepo interfaces.IAlbumRepo = repositories.Repo{}
+func (S AlbumService) ServicesGetAlbums() (int, []models.Album) {
+	var IRepo interfaces.IAlbumRepo = repositories.AlbumRepo{}
 	return IRepo.RepoGetAlbum()
 }
 
-func (S Service) ServicesGetAlbumById(param string) (int, []models.Album) {
-	var IRepo interfaces.IAlbumRepo = repositories.Repo{}
+func (S AlbumService) ServicesGetAlbumById(param string) (int, []models.Album) {
+	var IRepo interfaces.IAlbumRepo = repositories.AlbumRepo{}
 	var id int = checkParamId(param)
 	// handle kalau nol/huruf
 	return IRepo.RepoGetAlbumById(id)
 }
-func (S Service) ServicesAddAlbum(input models.Album) {
-	var IRepo interfaces.IAlbumRepo = repositories.Repo{}
+func (S AlbumService) ServicesAddAlbum(input models.Album) {
+	var IRepo interfaces.IAlbumRepo = repositories.AlbumRepo{}
 	IRepo.RepoAddAlbum(input)
 }
-func (S Service) ServicesUpdateAlbum(param string, input models.Album) {
+func (S AlbumService) ServicesUpdateAlbum(param string, input models.Album) {
 	//check param
 	var id int = checkParamId(param)
-	var IRepo interfaces.IAlbumRepo = repositories.Repo{}
+	var IRepo interfaces.IAlbumRepo = repositories.AlbumRepo{}
 	IRepo.RepoUpdateAlbum(id, input)
 }
 
