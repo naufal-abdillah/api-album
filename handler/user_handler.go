@@ -14,7 +14,6 @@ import (
 
 func HandlerRegisterUser(c *gin.Context) {
 	var input models.User
-	// var input map[string]string
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -22,7 +21,6 @@ func HandlerRegisterUser(c *gin.Context) {
 
 	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
 	userExists, err := (IUserRepo.UserExists(input.Email))
-	// userExists, err := (IUserRepo.UserExists(input["email"]))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -35,7 +33,6 @@ func HandlerRegisterUser(c *gin.Context) {
 		return
 	} else {
 		var IUserService interfaces.IUserService = services.UserService{}
-		// var Service services.UserService
 		IUserService.ServicesRegister(input)
 		token, err := createToken(input)
 		if err != nil {
@@ -50,7 +47,6 @@ func HandlerRegisterUser(c *gin.Context) {
 		return
 	}
 
-	// fmt.Print(user["email"])
 }
 func createToken(input models.User) (string, error) {
 	var SecretKey string = "RaHaSia"
