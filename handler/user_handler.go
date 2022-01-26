@@ -17,6 +17,7 @@ func HandlerRegisterUser(c *gin.Context) {
 	// var input map[string]string
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
@@ -24,12 +25,14 @@ func HandlerRegisterUser(c *gin.Context) {
 	// userExists, err := (IUserRepo.UserExists(input["email"]))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	if userExists {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "Failed",
 			"message": "Email already registered",
 		})
+		return
 	} else {
 		var IUserService interfaces.IUserService = services.UserService{}
 		// var Service services.UserService
@@ -44,6 +47,7 @@ func HandlerRegisterUser(c *gin.Context) {
 			"status": "Success",
 			"token":  token,
 		})
+		return
 	}
 
 	// fmt.Print(user["email"])
