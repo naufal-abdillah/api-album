@@ -2,6 +2,7 @@ package handler
 
 import (
 	"example/web-service-gin/interfaces"
+	"example/web-service-gin/models"
 	"example/web-service-gin/repositories"
 	"example/web-service-gin/services"
 	"net/http"
@@ -12,13 +13,15 @@ import (
 )
 
 func HandlerRegisterUser(c *gin.Context) {
-	var input map[string]string
+	var input models.User
+	// var input map[string]string
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
 	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
-	userExists, err := (IUserRepo.UserExists(input["email"]))
+	userExists, err := (IUserRepo.UserExists(input.Email))
+	// userExists, err := (IUserRepo.UserExists(input["email"]))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
@@ -45,10 +48,10 @@ func HandlerRegisterUser(c *gin.Context) {
 
 	// fmt.Print(user["email"])
 }
-func createToken(input map[string]string) (string, error) {
+func createToken(input models.User) (string, error) {
 	var SecretKey string = "RaHaSia"
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer:    input["Email"],
+		Issuer:    input.Email,
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 	})
 

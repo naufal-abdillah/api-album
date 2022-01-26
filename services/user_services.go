@@ -10,12 +10,12 @@ import (
 type UserService struct {
 }
 
-func (S UserService) ServicesRegister(input map[string]string) {
-	password, _ := bcrypt.GenerateFromPassword([]byte(input["password"]), 12)
+func (S UserService) ServicesRegister(input models.User) {
+	password, _ := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	// password, _ := bcrypt.GenerateFromPassword(user["password"], 12)
 	user := models.User{
-		Name:     input["name"],
-		Email:    input["email"],
+		Name:     input.Name,
+		Email:    input.Email,
 		Password: password,
 	}
 	// fmt.Print(user.ID)

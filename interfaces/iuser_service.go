@@ -1,5 +1,7 @@
 package interfaces
 
+import "example/web-service-gin/models"
+
 type IUserService interface {
-	ServicesRegister(input map[string]string)
+	ServicesRegister(input models.User)
 }
