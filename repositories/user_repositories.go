@@ -7,7 +7,7 @@ import (
 type UserRepo struct {
 }
 
-func (R UserRepo) RepoRegister(user models.User) (int64, error) {
+func (R *UserRepo) RepoRegister(user models.User) (int64, error) {
 	var id int64
 	query := `INSERT INTO tb_user (name, email, password) VALUES (?, ?, ?)`
 	row, err := db.Exec(query, user.Name, user.Email, user.Password)
@@ -18,7 +18,7 @@ func (R UserRepo) RepoRegister(user models.User) (int64, error) {
 	return id, err
 }
 
-func (R UserRepo) UserExists(email string) (bool, error) {
+func (R *UserRepo) UserExists(email string) (bool, error) {
 	userExists := db.QueryRow(`SELECT EXISTS (SELECT * FROM tb_user WHERE email =? )`, email)
 	var result bool
 	err := userExists.Scan(&result)

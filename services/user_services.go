@@ -13,7 +13,7 @@ type UserService struct {
 }
 
 func (S UserService) ServicesRegister(input models.User) (int64, error) {
-	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
+	var IUserRepo interfaces.IUserRepo = &repositories.UserRepo{}
 	userExists, err := (IUserRepo.UserExists(input.Email))
 	if err != nil {
 		return 0, err
