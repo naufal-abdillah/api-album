@@ -35,3 +35,22 @@ func (S UserService) ServicesRegister(input models.User) (int64, error) {
 	}
 	return id, nil
 }
+
+func (S UserService) ServicesLogin(input models.User) (int64, error) {
+	var IUserRepo interfaces.IUserRepo = &repositories.UserRepo{}
+	userExists, err := (IUserRepo.UserExists(input.Email))
+	if err != nil {
+		return 0, err
+	}
+	if !userExists {
+		return 0, errors.New("account is not registered")
+	}
+
+	user := models.User{
+		Name:     input.Name,
+		Email:    input.Email,
+		Password: input.Password,
+	}
+	return IUserRepo.RepoLogin(user)
+
+}
