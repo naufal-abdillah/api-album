@@ -59,6 +59,39 @@ func HandlerLoginUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	err = helpers.ValidateLoginUser(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Failed",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	var IUserService interfaces.IUserService = services.UserService{}
+
+	id, err := IUserService.ServicesLogin(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Failed",
+			"message": err.Error(),
+		})
+		return
+	}
+	token, err := createToken(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Failed",
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Success",
+		"id":     id,
+		"token":  token,
+	})
+
 }
 func createToken(input models.User) (string, error) {
 	var SecretKey string = "RaHaSia"
