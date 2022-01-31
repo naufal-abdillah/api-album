@@ -7,6 +7,6 @@ import (
 type IAlbumService interface {
 	ServicesGetAlbums() (int, []models.Album)
 	ServicesGetAlbumById(Param string) (int, []models.Album)
-	ServicesAddAlbum(input models.Album)                  // (int, []models.Album)
-	ServicesUpdateAlbum(param string, input models.Album) //(int, []models.Album)
+	ServicesAddAlbum(input models.Album)
+	ServicesUpdateAlbum(param string, input models.Album)
 }

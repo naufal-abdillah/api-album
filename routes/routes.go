@@ -12,5 +12,8 @@ func Routes() {
 	router.GET("/albums/:id", handler.HandlerGetAlbumById)
 	router.POST("/albums", handler.HandlerAddAlbum)
 	router.POST("/albums/:id", handler.HandlerUpdateAlbum)
+	// Auth
+	router.POST("/user/register", handler.HandlerRegisterUser)
+	router.POST("/user/login", handler.HandlerLoginUser)
 	router.Run("localhost:8000")
 }
