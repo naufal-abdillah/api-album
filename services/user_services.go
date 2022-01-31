@@ -22,11 +22,11 @@ func (S UserService) ServicesRegister(input models.User) (int64, error) {
 		return 0, errors.New("email already used")
 	}
 
-	password, _ := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
+	password, _ := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
 	user := models.User{
 		Name:     input.Name,
 		Email:    input.Email,
-		Password: password,
+		Password: string(password),
 	}
 	var Repo repositories.UserRepo
 	id, err := Repo.RepoRegister(user)
