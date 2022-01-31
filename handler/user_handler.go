@@ -5,7 +5,6 @@ import (
 	"example/web-service-gin/interfaces"
 	"example/web-service-gin/models"
 	"example/web-service-gin/services"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -20,8 +19,6 @@ func HandlerRegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	//Validate
-	fmt.Print(input)
 	err = helpers.ValidateUser(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
