@@ -51,7 +51,14 @@ func HandlerRegisterUser(c *gin.Context) {
 		"id":     id,
 		"token":  token,
 	})
-
+}
+func HandlerLoginUser(c *gin.Context) {
+	var input models.User
+	var err error
+	if err = c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 }
 func createToken(input models.User) (string, error) {
 	var SecretKey string = "RaHaSia"
