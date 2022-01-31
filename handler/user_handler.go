@@ -19,7 +19,7 @@ func HandlerRegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = helpers.ValidateUser(input)
+	err = helpers.ValidateRegisterUser(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "Failed",
