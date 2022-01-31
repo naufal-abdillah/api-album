@@ -3,7 +3,6 @@ package handler
 import (
 	"example/web-service-gin/interfaces"
 	"example/web-service-gin/models"
-	"example/web-service-gin/repositories"
 	"example/web-service-gin/services"
 	"net/http"
 	"time"
@@ -18,34 +17,32 @@ func HandlerRegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	//Validate
 
-	var IUserRepo interfaces.IUserRepo = repositories.UserRepo{}
-	userExists, err := (IUserRepo.UserExists(input.Email))
+	var IUserService interfaces.IUserService = services.UserService{}
+
+	id, err := IUserService.ServicesRegister(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if userExists {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "Failed",
-			"message": "Email already registered",
-		})
-		return
-	} else {
-		var IUserService interfaces.IUserService = services.UserService{}
-		IUserService.ServicesRegister(input)
-		token, err := createToken(input)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "Error creating token",
-			})
-		}
-		c.JSON(http.StatusOK, gin.H{
-			"status": "Success",
-			"token":  token,
+			"message": err.Error(),
 		})
 		return
 	}
+	token, err := createToken(input)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Failed",
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Success",
+		"id":     id,
+		"token":  token,
+	})
 
 }
 func createToken(input models.User) (string, error) {
@@ -54,8 +51,6 @@ func createToken(input models.User) (string, error) {
 		Issuer:    input.Email,
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 	})
-
 	token, err := claims.SignedString([]byte(SecretKey))
 	return token, err
-
 }
