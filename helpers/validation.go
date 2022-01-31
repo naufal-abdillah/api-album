@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-func ValidateUser(input models.User) error {
+func ValidateRegisterUser(input models.User) error {
 	if input.Email == "" {
 		return errors.New("email required")
 	}
