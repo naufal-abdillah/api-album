@@ -31,7 +31,7 @@ func (S UserService) ServicesRegister(input models.User) (int64, error) {
 	var Repo repositories.UserRepo
 	id, err := Repo.RepoRegister(user)
 	if err != nil {
-		return 0, err
+		return 0, errors.New("database error")
 	}
 	return id, nil
 }
